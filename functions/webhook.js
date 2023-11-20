@@ -22,15 +22,17 @@ exports.handler = async function(event, context) {
             // ...
         };
 
+        const apiToken = process.env.FIREHYDRANT_API_TOKEN;
         // Send a POST request to Firehydrant
         // Uncomment the following code to enable the POST request
 
         const response = await axios.post('https://api.firehydrant.io/v1/incidents', newIncidentData, {
             headers: {
-                'Authorization': 'Bearer ', // Use your actual API token
-                 'Content-Type': 'application/json'
-             }
-         });
+                'Authorization': `Bearer ${apiToken}`,
+                'Content-Type': 'application/json'
+            }
+        });
+        
          console.log(response.data);
 
         // Return a successful response
