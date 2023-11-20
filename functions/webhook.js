@@ -15,16 +15,10 @@ exports.handler = async function(event, context) {
         const newIncidentData = {
             "name": incidentName,
             "started_at": payload.started_at,
-            "impacts": payload.impacts,
-            // Include other fields as needed
-            // "summary": "Your summary here",
-            // "description": "Your description here",
-            // ...
+            "impacts": payload.impacts
         };
 
         const apiToken = process.env.FIREHYDRANT_API_TOKEN;
-        // Send a POST request to Firehydrant
-        // Uncomment the following code to enable the POST request
 
         const response = await axios.post('https://api.firehydrant.io/v1/incidents', newIncidentData, {
             headers: {
@@ -32,7 +26,7 @@ exports.handler = async function(event, context) {
                 'Content-Type': 'application/json'
             }
         });
-        
+
          console.log(response.data);
 
         // Return a successful response
