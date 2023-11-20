@@ -27,7 +27,7 @@ exports.handler = async function(event, context) {
 
         const response = await axios.post('https://api.firehydrant.io/v1/incidents', newIncidentData, {
             headers: {
-                'Authorization': 'Bearer fhb-08cfef6f54a0238ce39315fc562e7217', // Use your actual API token
+                'Authorization': 'Bearer ', // Use your actual API token
                  'Content-Type': 'application/json'
              }
          });
