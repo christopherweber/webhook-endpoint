@@ -13,12 +13,12 @@ exports.handler = async function(event, context) {
         };
 
         // Send a POST request to Firehydrant
-        const response = await axios.post('https://api.firehydrant.io/v1/incidents', newIncidentData, {
-            headers: {
-                'Authorization': 'Bearer fhb-08cfef6f54a0238ce39315fc562e7217',
-                'Content-Type': 'application/json'
-            }
-        });
+        // const response = await axios.post('https://api.firehydrant.io/v1/incidents', newIncidentData, {
+        //     headers: {
+        //         'Authorization': 'Bearer fhb-08cfef6f54a0238ce39315fc562e7217',
+        //         'Content-Type': 'application/json'
+        //     }
+        // });
 
         // Handle the response
         console.log(response.data);
