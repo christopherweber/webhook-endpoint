@@ -8,6 +8,7 @@ exports.handler = async (event) => {
 
     try {
         const payload = JSON.parse(event.body);
+        console.log(payload)
 
         // Manipulate the payload or make an API request
         // Example: const response = await axios.post('API_URL', payload);
