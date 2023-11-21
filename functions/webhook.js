@@ -14,19 +14,15 @@ exports.handler = async function(event) {
         const payload = JSON.parse(event.body);
 
         // Validate and extract required fields from the payload
-        if (!payload.name || !payload.started_at || !payload.impacts) {
+        if (!payload.name) {
             return {
                 statusCode: 400,
-                body: JSON.stringify({ message: "Payload missing required fields ('name', 'started_at', 'impacts')" })
+                body: JSON.stringify({ message: "Payload missing required field ('name')" })
             };
         }
 
-        let incidentName = payload.name;
-
         // Append "-second channel" to the incident name if not already present
-        if (!incidentName.includes("-second channel")) {
-            incidentName += "-second channel";
-        }
+        let incidentName = payload.name.includes("-second channel") ? payload.name : payload.name + "-second channel";
 
         // Construct new incident data for Firehydrant
         const newIncidentData = {
@@ -54,7 +50,7 @@ exports.handler = async function(event) {
 
         const newIncidentId = incidentResponse.data.id;
 
-        // Introduce a short delay before making the PATCH request
+        // Introduce a delay before making the PATCH request
         await delay(10000);
 
         // Construct the payload for the PATCH request
