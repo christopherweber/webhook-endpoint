@@ -1,9 +1,23 @@
 const axios = require('axios');
 
-exports.handler = async function(event, context) {
+exports.handler = async function(event) {
+    // Ensure the method is POST
+    if (event.httpMethod !== 'POST') {
+        return { statusCode: 405, body: JSON.stringify({ message: 'Method Not Allowed' }) };
+    }
+
     try {
         // Parse the incoming payload
         const payload = JSON.parse(event.body);
+
+        // Validate and extract required fields from the payload
+        if (!payload.name || !payload.started_at || !payload.impacts) {
+            return {
+                statusCode: 400,
+                body: JSON.stringify({ message: "Payload missing required fields ('name', 'started_at', 'impacts')" })
+            };
+        }
+
         let incidentName = payload.name;
 
         // Append "-second channel" to the incident name if not already present
@@ -34,8 +48,8 @@ exports.handler = async function(event, context) {
         // Construct the payload for the PATCH request
         const patchPayload = {
             "incidentId": newIncidentId,
-            "child_incident_ids": payload.child_incident_ids,
-            "parent_incident_id": payload.incidentId // Assuming the original incident ID is sent in this field
+            "child_incident_ids": payload.child_incident_ids || [],
+            "parent_incident_id": payload.incidentId || null // Assuming the original incident ID is sent in this field
         };
 
         // Update the incident with a PATCH request
