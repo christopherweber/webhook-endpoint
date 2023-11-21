@@ -27,9 +27,7 @@ exports.handler = async function(event) {
 
         // Construct new incident data for Firehydrant
         const newIncidentData = {
-            "name": incidentName,
-            "started_at": payload.started_at,
-            "impacts": payload.impacts
+            "name": incidentName
         };
 
         const apiToken = process.env.FIREHYDRANT_API_TOKEN;
