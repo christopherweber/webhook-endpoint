@@ -55,7 +55,7 @@ exports.handler = async function(event) {
         const newIncidentId = incidentResponse.data.id;
 
         // Introduce a short delay before making the PATCH request
-        await delay(2000);
+        await delay(10000);
 
         // Construct the payload for the PATCH request
         const patchPayload = {
