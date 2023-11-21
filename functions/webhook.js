@@ -1,5 +1,8 @@
 const axios = require('axios');
 
+// Function to introduce a delay
+const delay = ms => new Promise(res => setTimeout(res, ms));
+
 exports.handler = async function(event) {
     // Ensure the method is POST
     if (event.httpMethod !== 'POST') {
@@ -39,6 +42,8 @@ exports.handler = async function(event) {
                 'Content-Type': 'application/json'
             }
         });
+
+        // Check if the response has the 'id' property
         if (!incidentResponse.data || typeof incidentResponse.data.id !== 'string') {
             console.error("Invalid response structure:", incidentResponse.data);
             return {
@@ -46,8 +51,11 @@ exports.handler = async function(event) {
                 body: JSON.stringify({ message: "Invalid API response structure" })
             };
         }
+
         const newIncidentId = incidentResponse.data.id;
-        
+
+        // Introduce a short delay before making the PATCH request
+        await delay(2000);
 
         // Construct the payload for the PATCH request
         const patchPayload = {
