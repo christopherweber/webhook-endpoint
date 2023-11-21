@@ -42,14 +42,22 @@ exports.handler = async function(event) {
             }
         });
 
-        // Extract the new incident ID
+        // Check if the response has the expected structure
+        if (!incidentResponse.data || !incidentResponse.data.incident || typeof incidentResponse.data.incident.id !== 'string') {
+            console.error("Invalid response structure:", incidentResponse.data);
+            return {
+                statusCode: 500,
+                body: JSON.stringify({ message: "Invalid API response structure" })
+            };
+        }
+
         const newIncidentId = incidentResponse.data.incident.id;
 
         // Construct the payload for the PATCH request
         const patchPayload = {
             "incidentId": newIncidentId,
             "child_incident_ids": payload.child_incident_ids || [],
-            "parent_incident_id": payload.incidentId || null // Assuming the original incident ID is sent in this field
+            "parent_incident_id": payload.incidentId || null
         };
 
         // Update the incident with a PATCH request
