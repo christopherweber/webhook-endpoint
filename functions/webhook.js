@@ -39,17 +39,15 @@ exports.handler = async function(event) {
                 'Content-Type': 'application/json'
             }
         });
-
-        // Check if the response has the expected structure
-        if (!incidentResponse.data || !incidentResponse.data.incident || typeof incidentResponse.data.incident.id !== 'string') {
+        if (!incidentResponse.data || typeof incidentResponse.data.id !== 'string') {
             console.error("Invalid response structure:", incidentResponse.data);
             return {
                 statusCode: 500,
                 body: JSON.stringify({ message: "Invalid API response structure" })
             };
         }
-
-        const newIncidentId = incidentResponse.data.incident.id;
+        const newIncidentId = incidentResponse.data.id;
+        
 
         // Construct the payload for the PATCH request
         const patchPayload = {
