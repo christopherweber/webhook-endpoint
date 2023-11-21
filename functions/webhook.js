@@ -20,7 +20,7 @@ exports.handler = async function(event, context) {
 
         const apiToken = process.env.FIREHYDRANT_API_TOKEN;
 
-        // Create a new incident
+        // Create a new incident with a POST request
         const incidentResponse = await axios.post('https://api.firehydrant.io/v1/incidents', newIncidentData, {
             headers: {
                 'Authorization': `Bearer ${apiToken}`,
@@ -31,19 +31,25 @@ exports.handler = async function(event, context) {
         // Extract the new incident ID
         const newIncidentId = incidentResponse.data.incident.id;
 
-        // Update the payload with the new incident ID and the original parent incident ID
-        const updatedPayload = {
+        // Construct the payload for the PATCH request
+        const patchPayload = {
             "incidentId": newIncidentId,
             "child_incident_ids": payload.child_incident_ids,
             "parent_incident_id": payload.incidentId // Assuming the original incident ID is sent in this field
         };
 
-        // Additional logic can be added here if needed
+        // Update the incident with a PATCH request
+        await axios.patch(`https://api.firehydrant.io/v1/incidents/${newIncidentId}`, patchPayload, {
+            headers: {
+                'Authorization': `Bearer ${apiToken}`,
+                'Content-Type': 'application/json'
+            }
+        });
 
         // Return a successful response
         return {
             statusCode: 200,
-            body: JSON.stringify({ message: "Incident created and payload updated successfully", updatedPayload })
+            body: JSON.stringify({ message: "Incident created and updated successfully", updatedPayload: patchPayload })
         };
     } catch (error) {
         console.error("Error: ", error);
